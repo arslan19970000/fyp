@@ -21,31 +21,22 @@ export async function POST(request: NextRequest) {
     // Use gemini-pro which is stable and works
     const model = genAI.getGenerativeModel({ model: "gemini-pro" })
 
-    const context = `You are a helpful shopping assistant for ShopLite, an e-commerce platform.
-You help customers find products, answer questions about orders, shipping, and provide shopping recommendations.
-Be friendly, concise, and helpful. If asked about specific products or orders, suggest they check the website.
-Keep responses short and to the point.`
+    const systemPrompt = `You are a helpful shopping assistant for ShopLite, an e-commerce platform. You help customers find products, answer questions about orders, shipping, and provide shopping recommendations. Be friendly, concise, and helpful.`
 
-    // Create chat with history
-    const chat = model.startChat({
-      history: history && history.length > 0
-        ? history.map((msg: any) => ({
-            role: msg.role === "user" ? "user" : "model",
-            parts: [{ text: msg.content }]
-          }))
-        : [],
-      generationConfig: {
-        maxOutputTokens: 500,
-        temperature: 0.7,
-      },
-    })
+    // Build the full prompt with context and history
+    let fullPrompt = systemPrompt + "\n\n"
 
-    // Send message with context on first interaction
-    const prompt = history && history.length === 0
-      ? `${context}\n\nCustomer: ${message}`
-      : message
+    if (history && history.length > 0) {
+      history.forEach((msg: any) => {
+        const role = msg.role === "user" ? "Customer" : "Assistant"
+        fullPrompt += `${role}: ${msg.content}\n`
+      })
+    }
 
-    const result = await chat.sendMessage(prompt)
+    fullPrompt += `Customer: ${message}\nAssistant:`
+
+    // Generate response
+    const result = await model.generateContent(fullPrompt)
     const text = result.response.text()
     return NextResponse.json({ response: text })
   } catch (error: any) {
