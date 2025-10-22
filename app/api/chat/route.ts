@@ -30,8 +30,8 @@ export async function POST(request: NextRequest) {
 
     fullPrompt += `Customer: ${message}\nAssistant:`
 
-    // Use v1 REST API with gemini-pro (stable model)
-    const apiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`
+    // Use v1 REST API with gemini-2.5-flash (stable model)
+    const apiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`
 
     const response = await fetch(apiUrl, {
       method: "POST",
