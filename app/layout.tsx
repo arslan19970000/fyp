@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { Chatbot } from "@/components/chatbot"
 import { Toaster } from "sonner"
 import { Suspense } from "react"
 
@@ -41,6 +42,7 @@ export default function RootLayout({
           <Navbar />
           <main className="min-h-[60vh]">{children}</main>
           <Footer />
+          <Chatbot />
         </Suspense>
         <Toaster richColors position="top-center" />
         <Analytics />
