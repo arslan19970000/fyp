@@ -18,8 +18,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Use gemini-pro which is stable and works
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" })
+    // Use gemini-1.5-flash (current stable model)
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
 
     const systemPrompt = `You are a helpful shopping assistant for ShopLite, an e-commerce platform. You help customers find products, answer questions about orders, shipping, and provide shopping recommendations. Be friendly, concise, and helpful.`
 
