@@ -18,35 +18,42 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get the generative model
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+    // Use gemini-pro which is stable and works
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" })
 
-    // Build context for the chatbot
     const context = `You are a helpful shopping assistant for ShopLite, an e-commerce platform.
 You help customers find products, answer questions about orders, shipping, and provide shopping recommendations.
 Be friendly, concise, and helpful. If asked about specific products or orders, suggest they check the website.
 Keep responses short and to the point.`
 
-    // Build conversation history
-    let fullPrompt = context + "\n\n"
-    if (history && history.length > 0) {
-      history.forEach((msg: any) => {
-        fullPrompt += `${msg.role === "user" ? "Customer" : "Assistant"}: ${msg.content}\n`
-      })
-    }
-    fullPrompt += `Customer: ${message}\nAssistant:`
+    // Create chat with history
+    const chat = model.startChat({
+      history: history && history.length > 0
+        ? history.map((msg: any) => ({
+            role: msg.role === "user" ? "user" : "model",
+            parts: [{ text: msg.content }]
+          }))
+        : [],
+      generationConfig: {
+        maxOutputTokens: 500,
+        temperature: 0.7,
+      },
+    })
 
-    // Generate response
-    const result = await model.generateContent(fullPrompt)
-    const response = await result.response
-    const text = response.text()
+    // Send message with context on first interaction
+    const prompt = history && history.length === 0
+      ? `${context}\n\nCustomer: ${message}`
+      : message
 
+    const result = await chat.sendMessage(prompt)
+    const text = result.response.text()
     return NextResponse.json({ response: text })
   } catch (error: any) {
     console.error("Chat error:", error)
-    return NextResponse.json(
-      { error: error.message || "Failed to generate response" },
-      { status: 500 }
-    )
+    const message =
+      error.statusText ||
+      error.message ||
+      "Unexpected error occurred while generating response."
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
