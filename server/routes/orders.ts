@@ -52,8 +52,11 @@ router.post("/", async (req: Request, res: Response) => {
     await connectDB()
 
     const userId = (req as any).user.sub
-    const userName = (req as any).user.name
     const userEmail = (req as any).user.email
+
+    // Fetch user to get their name
+    const user = await User.findById(userId)
+    const userName = user?.name || "Customer"
 
     const orderData = {
       ...req.body,
