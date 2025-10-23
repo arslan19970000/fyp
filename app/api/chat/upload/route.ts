@@ -82,20 +82,46 @@ Be friendly and concise.`
 
     if (!response.ok) {
       console.error("Gemini API error:", data)
+
+      // Handle specific error cases
+      if (data.error?.message?.includes("overloaded")) {
+        return NextResponse.json({
+          response: `I can see you've uploaded an image! However, the AI service is currently experiencing high demand.
+
+Here's what I can help you with:
+• Describe what you're looking for, and I'll search our product database
+• Ask questions about products, orders, or shipping
+• Browse products using the "Search Products" button
+
+Please try uploading the image again in a few moments! 🙏`
+        })
+      }
+
       throw new Error(data.error?.message || "AI request failed")
     }
 
-    const aiResponse = data.candidates[0].content.parts[0].text
+    const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text
+
+    if (!aiResponse) {
+      return NextResponse.json({
+        response: "I received your image but couldn't analyze it. Could you describe what you're looking for instead?"
+      })
+    }
 
     return NextResponse.json({ response: aiResponse })
   } catch (error: any) {
     console.error("Chat upload error:", error)
-    return NextResponse.json(
-      {
-        response:
-          "I'm having trouble analyzing this image right now. Could you try describing what you're looking for instead?",
-      },
-      { status: 500 }
-    )
+
+    // Provide helpful fallback message
+    return NextResponse.json({
+      response: `I'm having trouble analyzing images right now. But I can still help you!
+
+Try these instead:
+• Describe the product you're looking for
+• Use "Search Products" to browse our catalog
+• Ask me questions about orders or shipping
+
+You can also try uploading the image again in a minute! 😊`
+    })
   }
 }
