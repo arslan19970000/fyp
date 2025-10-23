@@ -1,410 +1,376 @@
-# E-commerce Application - Separated Architecture
+# ShopLite - Full-Stack E-Commerce Platform
 
-Full-stack e-commerce application with **separate backend and frontend** in a monorepo structure.
-
-## 🏗️ Architecture
-
-```
-ecommerce/
-├── backend/           # Express.js REST API
-│   ├── src/
-│   │   ├── config/    # Database configuration
-│   │   ├── middleware/# Auth middleware
-│   │   ├── models/    # MongoDB models
-│   │   ├── routes/    # API routes
-│   │   ├── utils/     # Utilities (auth, validation)
-│   │   └── index.ts   # Main server file
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── .env
-│
-├── frontend/          # Next.js application
-│   ├── app/          # Next.js pages (Move your existing app here)
-│   ├── components/   # React components
-│   ├── lib/          # Frontend utilities
-│   ├── package.json
-│   └── .env.local
-│
-└── root-package.json  # Workspace root
-```
+A modern, full-stack e-commerce platform built with **Next.js 15**, featuring AI-powered customer support, secure payments via Stripe, and multi-role authentication.
 
 ## ✨ Features
 
-### Backend (Express.js)
-- ✅ RESTful API with Express.js
-- ✅ MongoDB with Mongoose
-- ✅ JWT authentication
-- ✅ Role-based authorization
-- ✅ Input validation (Zod)
-- ✅ TypeScript
-- ✅ CORS enabled
+### Core Features
+- 🛍️ **Product Management** - Browse, search, filter products with categories
+- 🛒 **Shopping Cart** - Persistent cart with localStorage
+- 💳 **Stripe Payments** - Secure checkout with Stripe integration
+- 👥 **Multi-Role Auth** - Buyer, Seller, and Admin roles
+- 🤖 **AI Chatbot** - Google Gemini-powered shopping assistant
+- ⭐ **Product Reviews** - 5-star rating system with comments
+- 📧 **Email Notifications** - Order confirmations via Nodemailer
+- 🌙 **Dark Mode** - Full dark mode support
+- 📱 **Responsive Design** - Mobile-first approach
 
-### Frontend (Next.js)
-- ✅ Next.js 15 (App Router)
-- ✅ React 19
-- ✅ TypeScript
-- ✅ Tailwind CSS
-- ✅ Shadcn UI components
-- ✅ State management (Zustand)
+### User Roles
+
+**Buyers:**
+- Browse and search products
+- Add to cart and checkout
+- View order history
+- Submit product reviews
+- Chat with AI assistant
+
+**Sellers:**
+- Create and manage products
+- View seller dashboard
+- Track inventory and ratings
+- Manage shop information
+
+**Admins:**
+- Full system access
+- User management
+- Product moderation
+- Dashboard analytics
+
+## 🏗️ Tech Stack
+
+**Frontend:**
+- Next.js 15 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Shadcn UI components
+- Zustand (state management)
+- SWR (data fetching)
+
+**Backend (Next.js API Routes):**
+- Next.js API Routes (serverless)
+- MongoDB with Mongoose
+- JWT authentication
+- Zod validation
+- Bcrypt password hashing
+
+**External Services:**
+- MongoDB Atlas (database)
+- Stripe (payments)
+- Google Gemini AI (chatbot)
+- Gmail SMTP (emails)
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js (v18+)
-- MongoDB Atlas account or local MongoDB
-- **At least 2GB free disk space**
+- Node.js 18+
+- MongoDB Atlas account
+- Stripe account
+- Google Gemini API key
 
 ### Installation
 
-#### Option 1: Install Everything at Once
+1. **Clone the repository:**
 ```bash
-cd ecommerce
-npm run install:all
+git clone https://github.com/arslan19970000/fyp.git
+cd fyp
 ```
 
-#### Option 2: Install Separately
-
-**Backend:**
+2. **Install dependencies:**
 ```bash
-cd backend
 npm install
 ```
 
-**Frontend:**
+3. **Set up environment variables:**
 ```bash
-cd frontend
-npm install
-```
-
-### Configuration
-
-#### Backend (.env)
-```bash
-cd backend
 cp .env.example .env
 ```
 
-Edit `backend/.env`:
+Edit `.env` with your credentials:
 ```env
-MONGODB_URI=your-mongodb-connection-string
-MONGODB_DB=ecommerce
-JWT_SECRET=your-super-secret-jwt-key
-PORT=5000
-CORS_ORIGIN=http://localhost:3000
+# Database
+MONGODB_URI=mongodb+srv://your-username:password@cluster.mongodb.net/
+MONGODB_DB=nextuth
+
+# Authentication
+JWT_SECRET=your-super-secret-jwt-key-minimum-32-characters
+
+# Stripe
+STRIPE_PUBLIC_KEY=pk_test_...
+STRIPE_SECRET_KEY=sk_test_...
+
+# Google Gemini AI
+GEMINI_API_KEY=AIza...
+
+# Email (Gmail SMTP)
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASSWORD=your-app-specific-password
+
+# Application
+NEXT_PUBLIC_API_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NODE_ENV=development
 ```
 
-#### Frontend (.env.local)
-```bash
-cd frontend
-```
-
-Create `frontend/.env.local`:
-```env
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
-```
-
-## 🏃 Running the Application
-
-### Development Mode
-
-#### Run Both (Recommended)
+4. **Run development server:**
 ```bash
 npm run dev
 ```
-This starts both backend (port 5000) and frontend (port 3000) concurrently.
 
-#### Run Separately
+5. **Access the application:**
+- Frontend: http://localhost:3000
+- API: http://localhost:3000/api
 
-**Backend only:**
-```bash
-npm run dev:backend
-# OR
-cd backend && npm run dev
+## 📁 Project Structure
+
 ```
-
-**Frontend only:**
-```bash
-npm run dev:frontend
-# OR
-cd frontend && npm run dev
-```
-
-### Access the Application
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:5000/api
-- **API Health Check**: http://localhost:5000/health
-
-## 📁 Moving Your Existing Files
-
-Since your Next.js app is currently in the root, you need to move it to the `frontend/` folder:
-
-### Manual Move Steps:
-
-1. **Copy Next.js files to frontend folder:**
-```bash
-# Copy app directory
-xcopy app frontend\app\ /E /I
-
-# Copy components
-xcopy components frontend\components\ /E /I
-
-# Copy lib
-xcopy lib frontend\lib\ /E /I
-
-# Copy hooks
-xcopy hooks frontend\hooks\ /E /I
-
-# Copy stores
-xcopy stores frontend\stores\ /E /I
-
-# Copy config files
-copy tsconfig.json frontend\tsconfig.json
-copy next.config.* frontend\
-copy tailwind.config.* frontend\
-copy components.json frontend\
-copy postcss.config.* frontend\
-```
-
-2. **Copy the original package.json to frontend:**
-```bash
-copy package.json frontend\package.json
-```
-
-3. **Update frontend API calls** to use the environment variable:
-
-Replace:
-```typescript
-// OLD
-fetch('/api/products')
-```
-
-With:
-```typescript
-// NEW
-fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`)
-```
-
-4. **Install frontend dependencies:**
-```bash
-cd frontend
-npm install
+ecommerce/
+├── app/                      # Next.js App Router
+│   ├── api/                 # API routes (backend)
+│   │   ├── auth/           # Authentication endpoints
+│   │   ├── products/       # Product CRUD
+│   │   ├── orders/         # Order management
+│   │   ├── users/          # User endpoints
+│   │   ├── chat/           # AI chatbot
+│   │   └── create-checkout-session/  # Stripe
+│   ├── (pages)/            # Frontend pages
+│   │   ├── page.tsx        # Homepage
+│   │   ├── products/       # Product listing/details
+│   │   ├── cart/           # Shopping cart
+│   │   ├── checkout/       # Checkout flow
+│   │   ├── account/        # User orders
+│   │   ├── seller/         # Seller dashboard
+│   │   └── admin/          # Admin dashboard
+│   └── layout.tsx          # Root layout
+│
+├── components/              # React components
+│   ├── ui/                 # Shadcn UI components
+│   ├── navbar.tsx
+│   ├── footer.tsx
+│   ├── chatbot.tsx
+│   └── product-card.tsx
+│
+├── lib/                     # Utilities
+│   ├── auth.ts             # JWT functions
+│   ├── db.ts               # MongoDB connection
+│   ├── middleware.ts       # Auth middleware
+│   └── validations.ts      # Zod schemas
+│
+├── models/                  # Mongoose schemas
+│   ├── user.ts
+│   ├── product.ts
+│   └── order.ts
+│
+├── stores/                  # Zustand state
+│   ├── auth-store.ts
+│   └── cart-store.ts
+│
+└── hooks/                   # Custom React hooks
 ```
 
 ## 📡 API Endpoints
 
-See [backend/README.md](backend/README.md) for detailed API documentation.
-
-### Quick Reference
-
-**Authentication:**
-- `POST /api/auth/register` - Register
-- `POST /api/auth/login` - Login
-
-**Products:**
-- `GET /api/products` - List products
-- `GET /api/products/:id` - Get product
-- `POST /api/products` - Create (Admin)
-- `PUT /api/products/:id` - Update (Admin)
-- `DELETE /api/products/:id` - Delete (Admin)
-
-**Orders:**
-- `GET /api/orders` - User orders
-- `POST /api/orders` - Create order
-- `GET /api/orders/:id` - Get order
-- `PUT /api/orders/:id` - Update order
-- `DELETE /api/orders/:id` - Cancel order
-
-**Users:**
-- `GET /api/users/me` - Current user
-- `PUT /api/users/me` - Update profile
-- `GET /api/users` - All users (Admin)
-
-## 🔧 Build for Production
-
-### Backend
-```bash
-cd backend
-npm run build
-npm run serve
-```
-
-### Frontend
-```bash
-cd frontend
-npm run build
-npm start
-```
-
-### Both
-```bash
-npm run build:all
-```
-
-## 📦 Project Structure Details
-
-### Backend Structure
-```
-backend/src/
-├── config/
-│   └── db.ts              # MongoDB connection
-├── middleware/
-│   └── auth.ts            # JWT middleware
-├── models/
-│   ├── User.ts            # User schema
-│   ├── Product.ts         # Product schema
-│   └── Order.ts           # Order schema
-├── routes/
-│   ├── auth.ts            # Auth endpoints
-│   ├── products.ts        # Product endpoints
-│   ├── orders.ts          # Order endpoints
-│   └── users.ts           # User endpoints
-├── utils/
-│   ├── auth.ts            # JWT utils
-│   └── validations.ts     # Zod schemas
-└── index.ts               # Express app
-```
-
-### Frontend Structure
-```
-frontend/
-├── app/                   # Next.js pages
-├── components/            # React components
-│   ├── ui/               # Shadcn components
-│   ├── navbar.tsx
-│   └── footer.tsx
-├── lib/                   # Utilities
-├── stores/                # Zustand stores
-└── hooks/                 # Custom hooks
-```
-
-## 🚨 Important Notes
-
-### Disk Space Issue
-You mentioned having disk space issues. Before installing:
-
-1. **Check available space:**
-```bash
-# Windows
-wmic logicaldisk get size,freespace,caption
-```
-
-2. **Clean npm cache:**
-```bash
-npm cache clean --force
-```
-
-3. **Delete old node_modules (if any):**
-```bash
-# In root directory
-rm -rf node_modules
-```
-
-### Database
-- Uses MongoDB Atlas (cloud)
-- Connection string already configured
-- Database: `nextuth`
-
 ### Authentication
-- JWT tokens (7-day expiry)
-- Stored in frontend (localStorage/cookies)
-- Sent via `Authorization: Bearer <token>` header
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+
+### Products
+- `GET /api/products` - List products (with search/filters)
+- `GET /api/products/:id` - Get product details
+- `POST /api/products/:id` - Add review (buyers only)
+
+### Orders
+- `GET /api/orders` - Get user orders
+- `POST /api/orders` - Create new order
+
+### Stripe
+- `POST /api/create-checkout-session` - Create Stripe session
+
+### AI Chatbot
+- `POST /api/chat` - Chat with AI assistant
+
+### Users
+- `GET /api/users/me` - Get current user
+- `GET /api/verify-session` - Verify session
 
 ## 🛠️ Available Scripts
 
-### Root Level
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Run both backend & frontend |
-| `npm run dev:backend` | Run backend only |
-| `npm run dev:frontend` | Run frontend only |
-| `npm run install:all` | Install all dependencies |
-| `npm run build:all` | Build both apps |
-
-### Backend
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start with nodemon |
-| `npm start` | Start with ts-node |
-| `npm run build` | Compile TypeScript |
-| `npm run serve` | Run compiled code |
-
-### Frontend
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Development server |
-| `npm run build` | Production build |
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
 | `npm start` | Start production server |
-| `npm run lint` | Run linter |
+| `npm run lint` | Run ESLint |
 
 ## 🔐 Environment Variables
 
-### Backend (.env)
+Required variables in `.env`:
+
 ```env
-MONGODB_URI=mongodb+srv://...
-MONGODB_DB=ecommerce
-JWT_SECRET=your-secret-key
-PORT=5000
-NODE_ENV=development
-CORS_ORIGIN=http://localhost:3000
+MONGODB_URI           # MongoDB Atlas connection string
+MONGODB_DB            # Database name
+JWT_SECRET            # Secret key for JWT (32+ chars)
+STRIPE_PUBLIC_KEY     # Stripe publishable key
+STRIPE_SECRET_KEY     # Stripe secret key
+GEMINI_API_KEY        # Google Gemini API key
+EMAIL_HOST            # SMTP host (smtp.gmail.com)
+EMAIL_PORT            # SMTP port (587)
+EMAIL_USER            # Your email
+EMAIL_PASSWORD        # App-specific password
+NEXT_PUBLIC_API_URL   # API base URL
+NEXT_PUBLIC_APP_URL   # App base URL
 ```
 
-### Frontend (.env.local)
-```env
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
-```
+## 🎨 Key Features Explained
 
-## 📚 Documentation
+### Multi-Role Authentication
+- JWT-based authentication with 7-day expiry
+- Role-based access control (RBAC)
+- Protected routes for buyers, sellers, admins
+- Secure password hashing with bcrypt
 
-- [Backend API Documentation](backend/README.md)
-- [Express Setup Guide](EXPRESS_SETUP.md)
+### AI Shopping Assistant
+- Powered by Google Gemini 2.5 Flash
+- Context-aware conversations
+- Real-time responses
+- Shopping-focused system prompt
 
-## 🐛 Troubleshooting
+### Stripe Payment Integration
+- Secure checkout sessions
+- Test mode support
+- Metadata storage for orders
+- Success/cancel page handling
 
-### Backend won't start
-- Check MongoDB connection string
-- Ensure JWT_SECRET is set
-- Verify port 5000 is available
+### Email Notifications
+- Order confirmations for buyers
+- New order alerts for sellers
+- Beautiful HTML email templates
+- Gmail SMTP integration
 
-### Frontend can't connect to API
-- Check NEXT_PUBLIC_API_URL in .env.local
-- Ensure backend is running
-- Check CORS settings
-
-### Module not found errors
-- Run `npm install` in both folders
-- Delete node_modules and reinstall
+### Product Review System
+- 5-star rating with hover effects
+- Text comments
+- Automatic rating calculation
+- Buyer-only submission
 
 ## 🚀 Deployment
 
-### Backend
-- Deploy to: Railway, Render, Heroku, DigitalOcean
-- Set environment variables
-- Use `npm run serve` or PM2
+### Vercel (Recommended)
 
-### Frontend
-- Deploy to: Vercel, Netlify
-- Set `NEXT_PUBLIC_API_URL` to production backend URL
-- Build command: `npm run build`
+1. **Push to GitHub:**
+```bash
+git push origin main
+```
+
+2. **Deploy to Vercel:**
+- Import repository on Vercel
+- Add environment variables
+- Deploy automatically
+
+3. **Set environment variables in Vercel:**
+- Go to Project Settings → Environment Variables
+- Add all variables from `.env`
+
+### Environment Setup
+- `MONGODB_URI` - Your MongoDB Atlas URI
+- `JWT_SECRET` - Random 32+ character string
+- `STRIPE_SECRET_KEY` - From Stripe dashboard
+- `GEMINI_API_KEY` - From Google AI Studio
+- `EMAIL_PASSWORD` - Gmail app-specific password
+
+## 📚 Documentation
+
+- [THESIS.md](THESIS.md) - Complete academic thesis (120+ pages)
+- [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md) - Migration guide
+
+## 🐛 Troubleshooting
+
+### MongoDB Connection Error
+- Check `MONGODB_URI` is correct
+- Verify IP whitelist in MongoDB Atlas
+- Ensure database user has permissions
+
+### Stripe Payment Fails
+- Use test card: `4242 4242 4242 4242`
+- Verify Stripe keys are in test mode
+- Check webhook configuration
+
+### AI Chatbot Not Responding
+- Verify `GEMINI_API_KEY` is set
+- Check API quota in Google AI Studio
+- Review browser console for errors
+
+### Email Not Sending
+- Use Gmail app-specific password
+- Enable 2FA on Google account
+- Check SMTP settings
+
+## 🧪 Testing
+
+### Test Accounts
+Create test users with different roles:
+
+**Admin:**
+```bash
+# Use signup page with admin role
+Email: admin@shoplite.com
+Role: Admin
+```
+
+**Seller:**
+```bash
+Email: seller@example.com
+Role: Seller
+Shop Name: Your Shop
+```
+
+**Buyer:**
+```bash
+Email: buyer@example.com
+Role: Buyer
+```
+
+### Test Payment
+Use Stripe test card:
+- Card: `4242 4242 4242 4242`
+- Expiry: Any future date
+- CVC: Any 3 digits
+- ZIP: Any 5 digits
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
 
 ## 📄 License
 
-MIT
-
-## 👥 Contributing
-
-1. Fork the repository
-2. Create feature branch
-3. Commit changes
-4. Push to branch
-5. Open pull request
+MIT License - feel free to use this project for learning or commercial purposes.
 
 ## 🆘 Support
 
 For issues or questions:
-- Check [backend/README.md](backend/README.md)
-- Check [EXPRESS_SETUP.md](EXPRESS_SETUP.md)
-- Open an issue in the repository
+- Open an issue on GitHub
+- Check the [THESIS.md](THESIS.md) for detailed documentation
+- Review troubleshooting section above
+
+## 🙏 Acknowledgments
+
+- [Next.js](https://nextjs.org/) - React framework
+- [Shadcn/ui](https://ui.shadcn.com/) - UI components
+- [Stripe](https://stripe.com/) - Payment processing
+- [Google Gemini](https://ai.google.dev/) - AI chatbot
+- [MongoDB](https://www.mongodb.com/) - Database
+- [Vercel](https://vercel.com/) - Deployment platform
 
 ---
 
-**Built with ❤️ using Express.js, Next.js, MongoDB, and TypeScript**
+**Built with ❤️ using Next.js, TypeScript, MongoDB, and modern web technologies**
+
+**GitHub:** https://github.com/arslan19970000/fyp
+
+**Project Status:** ✅ Production Ready (MVP)

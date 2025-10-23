@@ -33,7 +33,10 @@
       "Bash(git rm:*)",
       "Bash(powershell.exe -Command \"Remove-Item -Path ''backend'' -Recurse -Force\")",
       "Bash(cmd //c taskkill //PID 26796 //F)",
-      "Bash(npm run create-admin:*)"
+      "Bash(npm run create-admin:*)",
+      "Bash(cmd //c taskkill //PID 15084 //F)",
+      "Bash(timeout 5 cmd:*)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": []
