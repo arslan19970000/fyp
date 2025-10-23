@@ -64,7 +64,7 @@ const QUICK_ACTIONS = [
   { label: "View Cart", icon: ShoppingCart, action: "view-cart", prompt: "What's in my cart?" },
 ]
 
-export function EnhancedChatbot() {
+export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
     {
