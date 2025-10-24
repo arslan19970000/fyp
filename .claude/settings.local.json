@@ -36,7 +36,8 @@
       "Bash(npm run create-admin:*)",
       "Bash(cmd //c taskkill //PID 15084 //F)",
       "Bash(timeout 5 cmd:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

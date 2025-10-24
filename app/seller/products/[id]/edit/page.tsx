@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/card"
 import { useAuth } from "@/stores/auth-store"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "/api"
 
 const productSchema = z.object({
   title: z.string().min(1, "Title is required"),

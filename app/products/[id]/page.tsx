@@ -10,7 +10,7 @@ import { useAuth } from "@/stores/auth-store"
 import { Star } from "lucide-react"
 import { toast } from "sonner"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "/api"
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 export default function ProductDetailPage() {

@@ -20,7 +20,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useAuth } from "@/stores/auth-store"
 import { Package, DollarSign, Image, Tag, Box, Sparkles } from "lucide-react"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "/api"
 
 const productSchema = z.object({
   title: z.string().min(1, "Title is required"),
